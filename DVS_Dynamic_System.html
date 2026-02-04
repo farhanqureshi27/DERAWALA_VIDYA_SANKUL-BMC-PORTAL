@@ -1,0 +1,1918 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DVS Professional Master Portal v3.0 - Dynamic</title>
+    <style>
+        :root {
+            --main: #1a237e;
+            --main-light: #3949ab;
+            --neg: #b71c1c;
+            --neg-light: #ffebee;
+            --pos: #1b5e20;
+            --pos-light: #e8f5e9;
+            --bg: #f5f7fa;
+            --gold: #d4af37;
+            --shadow: 0 2px 8px rgba(0,0,0,0.1);
+            --shadow-lg: 0 5px 20px rgba(0,0,0,0.15);
+        }
+        
+        * { box-sizing: border-box; }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: var(--bg);
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, var(--main) 0%, var(--main-light) 100%);
+            color: white;
+            padding: 20px;
+            text-align: center;
+            box-shadow: var(--shadow);
+        }
+        
+        .header h1 {
+            margin: 0 0 5px 0;
+            font-size: 1.8em;
+        }
+        
+        .header small {
+            opacity: 0.9;
+            font-size: 0.9em;
+        }
+        
+        /* Login Section */
+        #login-section {
+            max-width: 400px;
+            margin: 50px auto;
+            padding: 30px;
+            background: white;
+            border-radius: 15px;
+            box-shadow: var(--shadow-lg);
+        }
+        
+        #login-section h2 {
+            color: var(--main);
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        .login-logo {
+            text-align: center;
+            font-size: 4em;
+            margin-bottom: 20px;
+        }
+        
+        /* Menu Cards */
+        .menu-container {
+            padding: 20px;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 15px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .menu-card {
+            background: white;
+            padding: 25px;
+            border-radius: 12px;
+            text-align: center;
+            box-shadow: var(--shadow);
+            cursor: pointer;
+            border: 2px solid transparent;
+            transition: all 0.3s ease;
+        }
+        
+        .menu-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-lg);
+            border-color: var(--main);
+        }
+        
+        .menu-card span {
+            font-size: 1.1em;
+            font-weight: 500;
+        }
+        
+        .menu-card .icon {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+        
+        /* Container Panels */
+        .container {
+            padding: 20px;
+            display: none;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .panel {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: var(--shadow-lg);
+            margin-top: 20px;
+        }
+        
+        .panel h2, .panel h3 {
+            margin-top: 0;
+            border-bottom: 3px solid var(--main);
+            padding-bottom: 10px;
+        }
+        
+        /* Form Elements */
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            font-size: 0.95em;
+            color: #333;
+        }
+        
+        input, select, textarea {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 15px;
+            transition: border-color 0.3s;
+            font-family: inherit;
+        }
+        
+        input:focus, select:focus, textarea:focus {
+            outline: none;
+            border-color: var(--main);
+        }
+        
+        textarea {
+            resize: vertical;
+            min-height: 80px;
+        }
+        
+        /* Buttons */
+        .btn {
+            width: 100%;
+            padding: 15px;
+            border: none;
+            border-radius: 8px;
+            color: white;
+            font-weight: bold;
+            font-size: 16px;
+            cursor: pointer;
+            margin-top: 10px;
+            transition: all 0.3s;
+        }
+        
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow);
+        }
+        
+        .btn:active {
+            transform: translateY(0);
+        }
+        
+        .btn-main { background: var(--main); }
+        .btn-main:hover { background: var(--main-light); }
+        .btn-neg { background: var(--neg); }
+        .btn-neg:hover { background: #c62828; }
+        .btn-pos { background: var(--pos); }
+        .btn-pos:hover { background: #2e7d32; }
+        .btn-danger { background: #d32f2f; }
+        .btn-danger:hover { background: #f44336; }
+        
+        .btn-back {
+            width: auto;
+            padding: 10px 20px;
+            margin-bottom: 15px;
+            background: #757575;
+        }
+        
+        .btn-back:hover {
+            background: #616161;
+        }
+        
+        .btn-small {
+            width: auto;
+            padding: 8px 15px;
+            font-size: 14px;
+            margin: 5px;
+        }
+        
+        /* Report Grid */
+        .report-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-top: 25px;
+        }
+        
+        .neg-col, .pos-col {
+            padding: 20px;
+            border-radius: 10px;
+            min-height: 200px;
+        }
+        
+        .neg-col {
+            background: var(--neg-light);
+            border: 2px solid var(--neg);
+        }
+        
+        .pos-col {
+            background: var(--pos-light);
+            border: 2px solid var(--pos);
+        }
+        
+        .neg-col h4 {
+            color: var(--neg);
+            margin-top: 0;
+        }
+        
+        .pos-col h4 {
+            color: var(--pos);
+            margin-top: 0;
+        }
+        
+        .log-entry {
+            background: white;
+            padding: 12px;
+            margin-bottom: 10px;
+            border-radius: 6px;
+            border-left: 4px solid;
+            font-size: 0.9em;
+        }
+        
+        .neg-col .log-entry {
+            border-left-color: var(--neg);
+        }
+        
+        .pos-col .log-entry {
+            border-left-color: var(--pos);
+        }
+        
+        .total-row {
+            font-weight: bold;
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 3px solid #333;
+            font-size: 1.1em;
+        }
+        
+        /* Alert Messages */
+        .alert {
+            padding: 15px 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            font-weight: 500;
+        }
+        
+        .alert-success {
+            background: var(--pos-light);
+            color: var(--pos);
+            border: 2px solid var(--pos);
+        }
+        
+        .alert-error {
+            background: var(--neg-light);
+            color: var(--neg);
+            border: 2px solid var(--neg);
+        }
+        
+        .alert-warning {
+            background: #fff3e0;
+            color: #e65100;
+            border: 2px solid #ff9800;
+        }
+        
+        /* Stats Cards */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+        
+        .stat-card {
+            background: linear-gradient(135deg, var(--main) 0%, var(--main-light) 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+        }
+        
+        .stat-card h3 {
+            margin: 0;
+            font-size: 2em;
+        }
+        
+        .stat-card p {
+            margin: 5px 0 0 0;
+            opacity: 0.9;
+        }
+        
+        /* Warning Box */
+        .warning-box {
+            background: #fff3e0;
+            border: 3px solid #ff9800;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px 0;
+            text-align: center;
+        }
+        
+        .warning-box h4 {
+            color: #e65100;
+            margin-top: 0;
+        }
+        
+        /* Config Item */
+        .config-item {
+            background: #f5f5f5;
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 8px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-left: 4px solid var(--main);
+        }
+        
+        .config-item-content {
+            flex: 1;
+        }
+        
+        .config-item-actions {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .icon-btn {
+            background: none;
+            border: none;
+            font-size: 1.2em;
+            cursor: pointer;
+            padding: 5px 10px;
+            border-radius: 5px;
+            transition: all 0.3s;
+        }
+        
+        .icon-btn:hover {
+            background: rgba(0,0,0,0.1);
+        }
+        
+        .edit-btn { color: #1976d2; }
+        .delete-btn { color: #d32f2f; }
+        
+        /* Toggle Switch */
+        .toggle-switch {
+            position: relative;
+            display: inline-block;
+            width: 60px;
+            height: 34px;
+        }
+        
+        .toggle-switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+        
+        .toggle-slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #ccc;
+            transition: .4s;
+            border-radius: 34px;
+        }
+        
+        .toggle-slider:before {
+            position: absolute;
+            content: "";
+            height: 26px;
+            width: 26px;
+            left: 4px;
+            bottom: 4px;
+            background-color: white;
+            transition: .4s;
+            border-radius: 50%;
+        }
+        
+        input:checked + .toggle-slider {
+            background-color: var(--pos);
+        }
+        
+        input:checked + .toggle-slider:before {
+            transform: translateX(26px);
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .menu-container {
+                grid-template-columns: 1fr;
+            }
+            
+            .report-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .config-item {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            
+            .config-item-actions {
+                margin-top: 10px;
+            }
+        }
+        
+        /* Loading Spinner */
+        .spinner {
+            border: 3px solid #f3f3f3;
+            border-top: 3px solid var(--main);
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 20px auto;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        .hidden {
+            display: none !important;
+        }
+        
+        .badge {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 0.85em;
+            font-weight: 600;
+            margin-left: 10px;
+        }
+        
+        .badge-admin {
+            background: #ff9800;
+            color: white;
+        }
+        
+        .section-divider {
+            border-top: 2px solid #e0e0e0;
+            margin: 30px 0;
+            padding-top: 20px;
+        }
+    </style>
+</head>
+<body>
+
+<!-- Login Section -->
+<div id="login-section">
+    <div class="login-logo">🏫</div>
+    <h2 id="loginTitle">DVS MASTER LOGIN</h2>
+    <div class="form-group">
+        <label>User ID</label>
+        <input type="text" id="uID" placeholder="Enter your User ID" autocomplete="username">
+    </div>
+    <div class="form-group">
+        <label>Password</label>
+        <input type="password" id="uPass" placeholder="Enter your Password" autocomplete="current-password">
+    </div>
+    <button class="btn btn-main" onclick="doLogin()">Login to Portal</button>
+</div>
+
+<!-- Portal Section -->
+<div id="portal-section" style="display:none;">
+    <div class="header" id="mainHeader">
+        <h1 id="headerTitle">🏫 DERAWALA VIDYA SANKUL</h1>
+        <small id="userDisplay"></small>
+    </div>
+
+    <!-- Main Menu -->
+    <div id="main-menu" class="menu-container">
+        <div class="menu-card admin-only" onclick="showPanel('tab-t-reg')" style="display:none;">
+            <div class="icon">👨‍🏫</div>
+            <span>Teacher Registration</span>
+        </div>
+        <div class="menu-card admin-only" onclick="showPanel('tab-s-reg')" style="display:none;">
+            <div class="icon">🎓</div>
+            <span>Student Registration</span>
+        </div>
+        <div class="menu-card" onclick="showPanel('tab-neg')">
+            <div class="icon">⚠️</div>
+            <span>Negative BMC</span>
+        </div>
+        <div class="menu-card" onclick="showPanel('tab-pos')">
+            <div class="icon">🏆</div>
+            <span>Positive BMC</span>
+        </div>
+        <div class="menu-card admin-only" onclick="showPanel('tab-ana')" style="display:none;">
+            <div class="icon">📊</div>
+            <span>Analytics & Reports</span>
+        </div>
+        <div class="menu-card admin-only" onclick="showPanel('tab-manage')" style="display:none;">
+            <div class="icon">⚙️</div>
+            <span>Manage Records</span>
+        </div>
+        <div class="menu-card admin-only" onclick="showPanel('tab-config')" style="display:none;">
+            <div class="icon">🔧</div>
+            <span>System Configuration<span class="badge badge-admin">ADMIN</span></span>
+        </div>
+        <div class="menu-card" onclick="showPanel('tab-security')">
+            <div class="icon">🔐</div>
+            <span>Security Settings</span>
+        </div>
+        <div class="menu-card" onclick="doLogout()" style="background:#fff0f0;">
+            <div class="icon" style="color:red;">🚪</div>
+            <span style="color:red;">Logout</span>
+        </div>
+    </div>
+
+    <!-- System Configuration Panel -->
+    <div id="tab-config" class="container">
+        <button class="btn btn-back" onclick="showMenu()">← Back to Menu</button>
+        <div class="panel" style="border-top: 5px solid #ff9800;">
+            <h2 style="color:#ff9800;">🔧 System Configuration <span class="badge badge-admin">ADMIN ONLY</span></h2>
+            
+            <!-- School Branding -->
+            <div class="section-divider">
+                <h3>🏫 School Branding</h3>
+                <div class="form-group">
+                    <label>School Name</label>
+                    <input type="text" id="cfgSchoolName" placeholder="Enter school name">
+                </div>
+                <div class="form-group">
+                    <label>School Motto</label>
+                    <input type="text" id="cfgMotto" placeholder="Enter school motto">
+                </div>
+                <div class="form-group">
+                    <label>Primary Color</label>
+                    <input type="color" id="cfgPrimaryColor">
+                </div>
+                <div class="form-group">
+                    <label>Secondary Color</label>
+                    <input type="color" id="cfgSecondaryColor">
+                </div>
+                <button class="btn btn-main" onclick="saveBranding()">💾 Save Branding</button>
+            </div>
+            
+            <!-- Class Management -->
+            <div class="section-divider">
+                <h3>📚 Class Management</h3>
+                <div id="classList"></div>
+                <div class="form-group">
+                    <label>Add New Class</label>
+                    <input type="text" id="newClassName" placeholder="e.g., Class 11-A">
+                </div>
+                <button class="btn btn-main" onclick="addClass()">➕ Add Class</button>
+            </div>
+            
+            <!-- Behavior Issues Library -->
+            <div class="section-divider">
+                <h3>📋 Behavior Issues Library</h3>
+                <div id="issuesLibrary"></div>
+                <div class="form-group">
+                    <label>Issue Grade</label>
+                    <select id="newIssueGrade">
+                        <option value="">-- Select Grade --</option>
+                        <option value="Grade 1">Grade 1 (Minor)</option>
+                        <option value="Grade 2">Grade 2 (Moderate)</option>
+                        <option value="Grade 3">Grade 3 (Serious)</option>
+                        <option value="Grade 4">Grade 4 (Severe)</option>
+                        <option value="Grade 5">Grade 5 (Critical)</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Issue ID</label>
+                    <input type="text" id="newIssueID" placeholder="e.g., ISS-0098">
+                </div>
+                <div class="form-group">
+                    <label>Issue Description</label>
+                    <input type="text" id="newIssueDesc" placeholder="e.g., Uniform violation">
+                </div>
+                <button class="btn btn-main" onclick="addIssue()">➕ Add Issue</button>
+            </div>
+            
+            <!-- Feature Toggles -->
+            <div class="section-divider">
+                <h3>⚙️ Feature Toggles</h3>
+                <div class="config-item">
+                    <div class="config-item-content">
+                        <strong>Parent Notifications</strong>
+                        <p style="margin:5px 0 0 0; color:#666; font-size:0.9em;">Allow teachers to send notifications to parents</p>
+                    </div>
+                    <label class="toggle-switch">
+                        <input type="checkbox" id="toggleParentNotif" onchange="saveFeatureToggle('parentNotifications', this.checked)">
+                        <span class="toggle-slider"></span>
+                    </label>
+                </div>
+                <div class="config-item">
+                    <div class="config-item-content">
+                        <strong>Student Self-View</strong>
+                        <p style="margin:5px 0 0 0; color:#666; font-size:0.9em;">Allow students to view their own records</p>
+                    </div>
+                    <label class="toggle-switch">
+                        <input type="checkbox" id="toggleStudentView" onchange="saveFeatureToggle('studentSelfView', this.checked)">
+                        <span class="toggle-slider"></span>
+                    </label>
+                </div>
+                <div class="config-item">
+                    <div class="config-item-content">
+                        <strong>Auto-Archive Old Records</strong>
+                        <p style="margin:5px 0 0 0; color:#666; font-size:0.9em;">Automatically archive records older than 1 year</p>
+                    </div>
+                    <label class="toggle-switch">
+                        <input type="checkbox" id="toggleAutoArchive" onchange="saveFeatureToggle('autoArchive', this.checked)">
+                        <span class="toggle-slider"></span>
+                    </label>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Negative BMC Entry -->
+    <div id="tab-neg" class="container">
+        <button class="btn btn-back" onclick="showMenu()">← Back to Menu</button>
+        <div class="panel" style="border-top: 5px solid var(--neg);">
+            <h2 style="color:var(--neg);">⚠️ Negative BMC Entry</h2>
+            <form id="negForm" onsubmit="event.preventDefault(); saveRecord('Negative');">
+                <div class="form-group">
+                    <label>Date *</label>
+                    <input type="date" id="nDate" required>
+                </div>
+                <div class="form-group">
+                    <label>Class *</label>
+                    <select id="nCls" onchange="filterStudents('n')" required>
+                        <option value="">-- Select Class --</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Student Name *</label>
+                    <select id="nStd" required>
+                        <option value="">-- Select Student --</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Issue Grade *</label>
+                    <select id="nGrade" onchange="updateIssues()" required>
+                        <option value="">-- Select Grade --</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Behavior Issue Type *</label>
+                    <select id="nIssue" required>
+                        <option value="">-- Select Issue --</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Action Taken *</label>
+                    <textarea id="nAction" rows="3" placeholder="Describe the action taken..." required></textarea>
+                </div>
+                <div class="form-group">
+                    <label>Additional Remarks</label>
+                    <textarea id="nRemarks" rows="3" placeholder="Any additional comments..."></textarea>
+                </div>
+                <div class="form-group" id="notifyParentGroup">
+                    <label>Notify Parent?</label>
+                    <select id="nNotify">
+                        <option value="YES">YES</option>
+                        <option value="NO">NO</option>
+                    </select>
+                </div>
+                <button type="submit" class="btn btn-neg">Submit Negative Record</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Positive BMC Entry -->
+    <div id="tab-pos" class="container">
+        <button class="btn btn-back" onclick="showMenu()">← Back to Menu</button>
+        <div class="panel" style="border-top: 5px solid var(--pos);">
+            <h2 style="color:var(--pos);">🏆 Positive BMC Entry</h2>
+            <form id="posForm" onsubmit="event.preventDefault(); saveRecord('Positive');">
+                <div class="form-group">
+                    <label>Date *</label>
+                    <input type="date" id="pDate" required>
+                </div>
+                <div class="form-group">
+                    <label>Class *</label>
+                    <select id="pCls" onchange="filterStudents('p')" required>
+                        <option value="">-- Select Class --</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Student Name *</label>
+                    <select id="pStd" required>
+                        <option value="">-- Select Student --</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Appreciation Points (1-5) *</label>
+                    <input type="number" id="pGrade" min="1" max="5" value="3" required>
+                    <small style="color:#666;">1 = Good, 3 = Very Good, 5 = Excellent</small>
+                </div>
+                <div class="form-group">
+                    <label>Appreciation Details *</label>
+                    <textarea id="pAppreciate" rows="4" placeholder="Describe the positive behavior or achievement..." required></textarea>
+                </div>
+                <div class="form-group" id="notifyParentGroupPos">
+                    <label>Notify Parent?</label>
+                    <select id="pNotify">
+                        <option value="YES">YES</option>
+                        <option value="NO">NO</option>
+                    </select>
+                </div>
+                <button type="submit" class="btn btn-pos">Submit Positive Record</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Teacher Registration -->
+    <div id="tab-t-reg" class="container">
+        <button class="btn btn-back" onclick="showMenu()">← Back to Menu</button>
+        <div class="panel">
+            <h3>👨‍🏫 Staff Registration</h3>
+            <form id="teacherForm" onsubmit="event.preventDefault(); regT();">
+                <div class="form-group">
+                    <label>Full Name *</label>
+                    <input type="text" id="rtName" placeholder="Enter full name" required>
+                </div>
+                <div class="form-group">
+                    <label>Designation *</label>
+                    <select id="rtRole" required>
+                        <option value="">-- Select Role --</option>
+                        <option value="Class Teacher">Class Teacher</option>
+                        <option value="Subject Teacher">Subject Teacher</option>
+                        <option value="Principal">Principal</option>
+                        <option value="Director">Director</option>
+                        <option value="H.O.D">H.O.D</option>
+                        <option value="Coordinator">Coordinator</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Create Login ID *</label>
+                    <input type="text" id="rtID" placeholder="Enter unique login ID" required>
+                </div>
+                <div class="form-group">
+                    <label>Create Password *</label>
+                    <input type="text" id="rtPass" placeholder="Enter password (min 6 characters)" required>
+                </div>
+                <button type="submit" class="btn btn-main">Register Teacher</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Student Registration -->
+    <div id="tab-s-reg" class="container">
+        <button class="btn btn-back" onclick="showMenu()">← Back to Menu</button>
+        <div class="panel">
+            <h3>🎓 Student Enrollment</h3>
+            <form id="studentForm" onsubmit="event.preventDefault(); regS();">
+                <div class="form-group">
+                    <label>Student Full Name *</label>
+                    <input type="text" id="rsName" placeholder="Enter student's full name" required>
+                </div>
+                <div class="form-group">
+                    <label>Student Class *</label>
+                    <select id="rsCls" required>
+                        <option value="">-- Select Class --</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Parent/Guardian Name</label>
+                    <input type="text" id="rsParent" placeholder="Enter parent/guardian name">
+                </div>
+                <div class="form-group">
+                    <label>Contact Number</label>
+                    <input type="tel" id="rsContact" placeholder="Enter contact number">
+                </div>
+                <button type="submit" class="btn btn-main">Enroll Student</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Security Settings -->
+    <div id="tab-security" class="container">
+        <button class="btn btn-back" onclick="showMenu()">← Back to Menu</button>
+        <div class="panel">
+            <h3>🔐 Security Settings</h3>
+            <div style="background: #e3f2fd; padding: 15px; border-radius: 8px; margin-bottom: 20px;">
+                <strong>Current User:</strong> <span id="securityUserName"></span><br>
+                <strong>Role:</strong> <span id="securityUserRole"></span><br>
+                <strong>User ID:</strong> <span id="securityUserID"></span>
+            </div>
+            
+            <form id="securityForm" onsubmit="event.preventDefault(); changePassword();">
+                <div class="form-group">
+                    <label>New Password *</label>
+                    <input type="password" id="newPassword" placeholder="Enter new password (min 6 characters)" required>
+                </div>
+                <div class="form-group">
+                    <label>Confirm New Password *</label>
+                    <input type="password" id="confirmPassword" placeholder="Re-enter new password" required>
+                </div>
+                <button type="submit" class="btn btn-main">Update Password</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Analytics & Reports -->
+    <div id="tab-ana" class="container">
+        <button class="btn btn-back" onclick="showMenu()">← Back to Menu</button>
+        <div class="panel">
+            <h3>📊 Analytics & Master Logs</h3>
+            
+            <div class="stats-grid" id="overallStats"></div>
+            
+            <div class="form-group">
+                <label>Report Type</label>
+                <select id="repScope" onchange="toggleAnalyticsView()">
+                    <option value="single">Particular Student</option>
+                    <option value="all">All Students</option>
+                    <option value="class">By Class</option>
+                </select>
+            </div>
+            
+            <div class="form-group" id="searchBox">
+                <label>Select Student</label>
+                <select id="anaStd" onchange="loadStats()">
+                    <option value="">-- Select Student --</option>
+                </select>
+            </div>
+            
+            <div class="form-group" id="classBox" style="display:none;">
+                <label>Select Class</label>
+                <select id="anaCls" onchange="loadStats()">
+                    <option value="">-- Select Class --</option>
+                </select>
+            </div>
+            
+            <div class="report-grid">
+                <div class="neg-col">
+                    <h4>❌ Negative Records</h4>
+                    <div id="negLogs"></div>
+                    <div class="total-row">Total Negative: <span id="negTotal">0</span></div>
+                </div>
+                <div class="pos-col">
+                    <h4>✅ Positive Records</h4>
+                    <div id="posLogs"></div>
+                    <div class="total-row">Total Positive: <span id="posTotal">0</span></div>
+                </div>
+            </div>
+            
+            <div class="form-group" style="margin-top:25px;">
+                <label>Download Format</label>
+                <select id="ext">
+                    <option value="pdf">PDF Report</option>
+                    <option value="xlsx">Excel Spreadsheet</option>
+                    <option value="docx">Word Document</option>
+                    <option value="csv">CSV File</option>
+                </select>
+            </div>
+            <button class="btn btn-main" onclick="downloadReport()">📥 Download Report</button>
+        </div>
+    </div>
+
+    <!-- Manage Records -->
+    <div id="tab-manage" class="container">
+        <button class="btn btn-back" onclick="showMenu()">← Back to Menu</button>
+        <div class="panel">
+            <h3>⚙️ Manage Records</h3>
+            
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <h3 id="totalTeachers">0</h3>
+                    <p>Total Teachers</p>
+                </div>
+                <div class="stat-card">
+                    <h3 id="totalStudents">0</h3>
+                    <p>Total Students</p>
+                </div>
+                <div class="stat-card">
+                    <h3 id="totalRecords">0</h3>
+                    <p>Total Records</p>
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label>Select Action</label>
+                <select id="manageAction" onchange="showManageSection()">
+                    <option value="">-- Select Action --</option>
+                    <option value="view-teachers">View All Teachers</option>
+                    <option value="view-students">View All Students</option>
+                    <option value="delete-record">Delete Specific Record</option>
+                    <option value="export-data">Export All Data</option>
+                    <option value="system-reset" class="reset-only">⚠️ Full System Reset</option>
+                </select>
+            </div>
+            
+            <div id="manageContent"></div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Enhanced Database Structure with Configuration
+    let db = JSON.parse(localStorage.getItem('DVS_V30_DB')) || {
+        admins: [{id:"admin", pass:"dvs123", name:"Director", role:"Admin"}],
+        teachers: [],
+        students: [],
+        logs: [],
+        config: {
+            branding: {
+                schoolName: "DERAWALA VIDYA SANKUL",
+                motto: "Excellence in Education",
+                primaryColor: "#1a237e",
+                secondaryColor: "#3949ab"
+            },
+            classes: [
+                "Class 1", "Class 2", "Class 3", "Class 4", "Class 5", "Class 6",
+                "Class 7", "Class 8", "Class 9", "Class 10", "Class 11", "Class 12"
+            ],
+            behaviorIssues: {
+                "Grade 1": [
+                    {id:"ISS-0091", act:"Notebook incomplete"},
+                    {id:"ISS-0092", act:"Homework not done"},
+                    {id:"ISS-0081", act:"Talking during lectures"},
+                    {id:"ISS-0093", act:"Not bringing required materials"}
+                ],
+                "Grade 2": [
+                    {id:"ISS-0032", act:"Skipping Classes"},
+                    {id:"ISS-0033", act:"Disrespecting Teacher"},
+                    {id:"ISS-0029", act:"Mobile Phone Use"},
+                    {id:"ISS-0094", act:"Disrupting class activities"}
+                ],
+                "Grade 3": [
+                    {id:"ISS-0030", act:"Cheating in Exam"},
+                    {id:"ISS-0034", act:"Bullying Classmate"},
+                    {id:"ISS-0095", act:"Vandalism of school property"}
+                ],
+                "Grade 4": [
+                    {id:"ISS-0035", act:"Physical Fight"},
+                    {id:"ISS-0047", act:"Tobacco Use"},
+                    {id:"ISS-0096", act:"Threatening behavior"}
+                ],
+                "Grade 5": [
+                    {id:"ISS-0039", act:"Weapon in School"},
+                    {id:"ISS-0038", act:"Drug/Alcohol Possession"},
+                    {id:"ISS-0097", act:"Severe assault"}
+                ]
+            },
+            features: {
+                parentNotifications: true,
+                studentSelfView: false,
+                autoArchive: false
+            }
+        }
+    };
+    
+    let currentUser = null;
+
+    // Helper function to check if user has admin privileges
+    function hasAdminPrivileges() {
+        if (!currentUser) return false;
+        const role = currentUser.role || '';
+        return role === 'Admin' || role === 'Principal' || role === 'Director';
+    }
+
+    // Global Refresh Function - Updates all UI elements based on config
+    function globalRefresh() {
+        // Update branding
+        applyBranding();
+        
+        // Update all class dropdowns
+        updateClassDropdowns();
+        
+        // Update issue grade dropdowns
+        updateIssueGrades();
+        
+        // Update feature toggles
+        updateFeatureToggles();
+        
+        console.log('Global refresh completed');
+    }
+
+    // Apply Branding
+    function applyBranding() {
+        const branding = db.config.branding;
+        
+        // Update header
+        document.getElementById('headerTitle').innerHTML = `🏫 ${branding.schoolName}`;
+        document.getElementById('loginTitle').textContent = `${branding.schoolName} - LOGIN`;
+        
+        // Update CSS variables
+        document.documentElement.style.setProperty('--main', branding.primaryColor);
+        document.documentElement.style.setProperty('--main-light', branding.secondaryColor);
+        
+        // Update config form
+        if (document.getElementById('cfgSchoolName')) {
+            document.getElementById('cfgSchoolName').value = branding.schoolName;
+            document.getElementById('cfgMotto').value = branding.motto;
+            document.getElementById('cfgPrimaryColor').value = branding.primaryColor;
+            document.getElementById('cfgSecondaryColor').value = branding.secondaryColor;
+        }
+    }
+
+    // Update all class dropdowns
+    function updateClassDropdowns() {
+        const classes = db.config.classes;
+        const classOptions = '<option value="">-- Select Class --</option>' +
+            classes.map(cls => `<option value="${cls}">${cls}</option>`).join('');
+        
+        ['nCls', 'pCls', 'rsCls', 'anaCls'].forEach(id => {
+            const elem = document.getElementById(id);
+            if (elem) {
+                const currentValue = elem.value;
+                elem.innerHTML = classOptions;
+                // Restore selection if still valid
+                if (classes.includes(currentValue)) {
+                    elem.value = currentValue;
+                }
+            }
+        });
+    }
+
+    // Update Issue Grade Dropdowns
+    function updateIssueGrades() {
+        const grades = Object.keys(db.config.behaviorIssues);
+        const gradeOptions = '<option value="">-- Select Grade --</option>' +
+            grades.map(g => `<option value="${g}">${g} (${getGradeLabel(g)})</option>`).join('');
+        
+        const gradeSelect = document.getElementById('nGrade');
+        if (gradeSelect) {
+            const currentValue = gradeSelect.value;
+            gradeSelect.innerHTML = gradeOptions;
+            if (grades.includes(currentValue)) {
+                gradeSelect.value = currentValue;
+                updateIssues(); // Refresh issues for selected grade
+            }
+        }
+    }
+
+    // Get Grade Label
+    function getGradeLabel(grade) {
+        const labels = {
+            "Grade 1": "Minor",
+            "Grade 2": "Moderate",
+            "Grade 3": "Serious",
+            "Grade 4": "Severe",
+            "Grade 5": "Critical"
+        };
+        return labels[grade] || "";
+    }
+
+    // Update Feature Toggles
+    function updateFeatureToggles() {
+        const features = db.config.features;
+        
+        // Update toggle states
+        if (document.getElementById('toggleParentNotif')) {
+            document.getElementById('toggleParentNotif').checked = features.parentNotifications;
+        }
+        if (document.getElementById('toggleStudentView')) {
+            document.getElementById('toggleStudentView').checked = features.studentSelfView;
+        }
+        if (document.getElementById('toggleAutoArchive')) {
+            document.getElementById('toggleAutoArchive').checked = features.autoArchive;
+        }
+        
+        // Show/hide parent notification fields
+        const notifyGroups = ['notifyParentGroup', 'notifyParentGroupPos'];
+        notifyGroups.forEach(id => {
+            const elem = document.getElementById(id);
+            if (elem) {
+                elem.style.display = features.parentNotifications ? 'block' : 'none';
+            }
+        });
+    }
+
+    // Save Branding
+    function saveBranding() {
+        if (!hasAdminPrivileges()) {
+            showAlert('Access Denied: Only Admin/Director can modify branding', 'error');
+            return;
+        }
+        
+        db.config.branding = {
+            schoolName: document.getElementById('cfgSchoolName').value.trim() || "DERAWALA VIDYA SANKUL",
+            motto: document.getElementById('cfgMotto').value.trim() || "Excellence in Education",
+            primaryColor: document.getElementById('cfgPrimaryColor').value,
+            secondaryColor: document.getElementById('cfgSecondaryColor').value
+        };
+        
+        save();
+        globalRefresh();
+        showAlert('Branding updated successfully!', 'success');
+    }
+
+    // Add Class
+    function addClass() {
+        if (!hasAdminPrivileges()) {
+            showAlert('Access Denied: Only Admin/Director can add classes', 'error');
+            return;
+        }
+        
+        const className = document.getElementById('newClassName').value.trim();
+        
+        if (!className) {
+            showAlert('Please enter a class name', 'error');
+            return;
+        }
+        
+        if (db.config.classes.includes(className)) {
+            showAlert('Class already exists!', 'error');
+            return;
+        }
+        
+        db.config.classes.push(className);
+        db.config.classes.sort(); // Keep alphabetically sorted
+        
+        save();
+        globalRefresh();
+        loadClassList();
+        document.getElementById('newClassName').value = '';
+        showAlert('Class added successfully!', 'success');
+    }
+
+    // Delete Class
+    function deleteClass(className) {
+        if (!hasAdminPrivileges()) {
+            showAlert('Access Denied: Only Admin/Director can delete classes', 'error');
+            return;
+        }
+        
+        if (!confirm(`Are you sure you want to delete "${className}"?\n\nWarning: This may affect existing student records.`)) {
+            return;
+        }
+        
+        db.config.classes = db.config.classes.filter(c => c !== className);
+        
+        save();
+        globalRefresh();
+        loadClassList();
+        showAlert('Class deleted successfully!', 'success');
+    }
+
+    // Load Class List
+    function loadClassList() {
+        const container = document.getElementById('classList');
+        if (!container) return;
+        
+        if (db.config.classes.length === 0) {
+            container.innerHTML = '<p style="color:#999;">No classes configured</p>';
+            return;
+        }
+        
+        container.innerHTML = db.config.classes.map(cls => `
+            <div class="config-item">
+                <div class="config-item-content">
+                    <strong>${cls}</strong>
+                </div>
+                <div class="config-item-actions">
+                    ${hasAdminPrivileges() ? `<button class="icon-btn delete-btn" onclick="deleteClass('${cls}')" title="Delete">🗑️</button>` : ''}
+                </div>
+            </div>
+        `).join('');
+    }
+
+    // Add Issue
+    function addIssue() {
+        if (!hasAdminPrivileges()) {
+            showAlert('Access Denied: Only Admin/Director can add issues', 'error');
+            return;
+        }
+        
+        const grade = document.getElementById('newIssueGrade').value;
+        const id = document.getElementById('newIssueID').value.trim();
+        const desc = document.getElementById('newIssueDesc').value.trim();
+        
+        if (!grade || !id || !desc) {
+            showAlert('Please fill all fields', 'error');
+            return;
+        }
+        
+        // Check if ID already exists in this grade
+        if (db.config.behaviorIssues[grade].some(issue => issue.id === id)) {
+            showAlert('Issue ID already exists in this grade!', 'error');
+            return;
+        }
+        
+        db.config.behaviorIssues[grade].push({
+            id: id,
+            act: desc
+        });
+        
+        save();
+        globalRefresh();
+        loadIssuesLibrary();
+        
+        // Clear form
+        document.getElementById('newIssueGrade').value = '';
+        document.getElementById('newIssueID').value = '';
+        document.getElementById('newIssueDesc').value = '';
+        
+        showAlert('Issue added successfully!', 'success');
+    }
+
+    // Delete Issue
+    function deleteIssue(grade, issueId) {
+        if (!hasAdminPrivileges()) {
+            showAlert('Access Denied: Only Admin/Director can delete issues', 'error');
+            return;
+        }
+        
+        if (!confirm(`Are you sure you want to delete issue "${issueId}"?`)) {
+            return;
+        }
+        
+        db.config.behaviorIssues[grade] = db.config.behaviorIssues[grade].filter(issue => issue.id !== issueId);
+        
+        save();
+        globalRefresh();
+        loadIssuesLibrary();
+        showAlert('Issue deleted successfully!', 'success');
+    }
+
+    // Load Issues Library
+    function loadIssuesLibrary() {
+        const container = document.getElementById('issuesLibrary');
+        if (!container) return;
+        
+        const grades = Object.keys(db.config.behaviorIssues).sort();
+        
+        container.innerHTML = grades.map(grade => `
+            <div style="margin-bottom: 20px;">
+                <h4 style="color: var(--main); margin-bottom: 10px;">${grade} - ${getGradeLabel(grade)}</h4>
+                ${db.config.behaviorIssues[grade].map(issue => `
+                    <div class="config-item">
+                        <div class="config-item-content">
+                            <strong>${issue.id}</strong>: ${issue.act}
+                        </div>
+                        <div class="config-item-actions">
+                            ${hasAdminPrivileges() ? `<button class="icon-btn delete-btn" onclick="deleteIssue('${grade}', '${issue.id}')" title="Delete">🗑️</button>` : ''}
+                        </div>
+                    </div>
+                `).join('')}
+            </div>
+        `).join('');
+    }
+
+    // Save Feature Toggle
+    function saveFeatureToggle(feature, value) {
+        if (!hasAdminPrivileges()) {
+            showAlert('Access Denied: Only Admin/Director can modify features', 'error');
+            // Revert toggle
+            document.getElementById(`toggle${feature.charAt(0).toUpperCase() + feature.slice(1).replace(/([A-Z])/g, '$1')}`).checked = db.config.features[feature];
+            return;
+        }
+        
+        db.config.features[feature] = value;
+        save();
+        globalRefresh();
+        showAlert(`Feature ${value ? 'enabled' : 'disabled'} successfully!`, 'success');
+    }
+
+    // Initialize Issues Dropdown
+    function updateIssues() {
+        const grade = document.getElementById('nGrade').value;
+        const list = document.getElementById('nIssue');
+        
+        if (!grade) {
+            list.innerHTML = '<option value="">-- Select Issue --</option>';
+            return;
+        }
+        
+        const issues = db.config.behaviorIssues[grade] || [];
+        list.innerHTML = '<option value="">-- Select Issue --</option>' +
+            issues.map(b => `<option value="${b.id}: ${b.act}">${b.id} - ${b.act}</option>`).join('');
+    }
+
+    // Save Record with Form Reset
+    function saveRecord(type) {
+        const pre = type === 'Negative' ? 'n' : 'p';
+        const date = document.getElementById(pre + 'Date').value;
+        const cls = document.getElementById(pre + 'Cls').value;
+        const std = document.getElementById(pre + 'Std').value;
+        
+        // Validation
+        if (!date) {
+            showAlert('Please select a date', 'error');
+            return;
+        }
+        if (!cls) {
+            showAlert('Please select a class', 'error');
+            return;
+        }
+        if (!std) {
+            showAlert('Please select a student', 'error');
+            return;
+        }
+        
+        if (type === 'Negative') {
+            const grade = document.getElementById('nGrade').value;
+            const issue = document.getElementById('nIssue').value;
+            const action = document.getElementById('nAction').value;
+            
+            if (!grade || !issue || !action) {
+                showAlert('Please fill all required fields', 'error');
+                return;
+            }
+            
+            const log = {
+                id: 'LOG-' + Date.now(),
+                date: date,
+                student: std,
+                class: cls,
+                type: type,
+                grade: grade,
+                issue: issue,
+                action: action,
+                remarks: document.getElementById('nRemarks').value,
+                teacher: currentUser.name,
+                notify: db.config.features.parentNotifications ? document.getElementById('nNotify').value : 'N/A',
+                timestamp: new Date().toISOString()
+            };
+            
+            db.logs.push(log);
+            save();
+            showAlert('Negative record saved successfully!', 'success');
+            
+            // Reset form
+            document.getElementById('negForm').reset();
+            document.getElementById('nStd').innerHTML = '<option value="">-- Select Student --</option>';
+            document.getElementById('nIssue').innerHTML = '<option value="">-- Select Issue --</option>';
+            
+        } else {
+            const points = document.getElementById('pGrade').value;
+            const appreciation = document.getElementById('pAppreciate').value;
+            
+            if (!appreciation) {
+                showAlert('Please provide appreciation details', 'error');
+                return;
+            }
+            
+            const log = {
+                id: 'LOG-' + Date.now(),
+                date: date,
+                student: std,
+                class: cls,
+                type: type,
+                grade: points,
+                appreciation: appreciation,
+                teacher: currentUser.name,
+                notify: db.config.features.parentNotifications ? document.getElementById('pNotify').value : 'N/A',
+                timestamp: new Date().toISOString()
+            };
+            
+            db.logs.push(log);
+            save();
+            showAlert('Positive record saved successfully!', 'success');
+            
+            // Reset form
+            document.getElementById('posForm').reset();
+            document.getElementById('pStd').innerHTML = '<option value="">-- Select Student --</option>';
+        }
+        
+        // Re-set today's date after clearing
+        const today = new Date().toISOString().split('T')[0];
+        document.getElementById(pre + 'Date').value = today;
+        
+        setTimeout(() => showMenu(), 1500);
+    }
+
+    // Filter Students by Class
+    function filterStudents(pre) {
+        const cls = document.getElementById(pre + 'Cls').value;
+        const stdSelect = document.getElementById(pre + 'Std');
+        
+        if (!cls) {
+            stdSelect.innerHTML = '<option value="">-- Select Student --</option>';
+            return;
+        }
+        
+        const filtered = db.students.filter(s => s.cls === cls);
+        
+        if (filtered.length === 0) {
+            stdSelect.innerHTML = '<option value="">No students in this class</option>';
+            return;
+        }
+        
+        stdSelect.innerHTML = '<option value="">-- Select Student --</option>' +
+            filtered.map(s => `<option value="${s.name}">${s.name}</option>`).join('');
+    }
+
+    // Login Function
+    function doLogin() {
+        try {
+            const id = document.getElementById('uID').value.trim();
+            const pass = document.getElementById('uPass').value.trim();
+            
+            if (!id || !pass) {
+                alert('Please enter both User ID and Password');
+                return;
+            }
+            
+            const user = db.admins.find(u => u.id === id && u.pass === pass) ||
+                         db.teachers.find(u => u.id === id && u.pass === pass);
+            
+            if (user) {
+                currentUser = user;
+                
+                document.getElementById('login-section').style.display = 'none';
+                document.getElementById('portal-section').style.display = 'block';
+                document.getElementById('userDisplay').textContent = 
+                    `Welcome, ${user.name} (${user.role || 'Teacher'})`;
+                
+                // Show admin features if user has admin privileges
+                if (hasAdminPrivileges()) {
+                    document.querySelectorAll('.admin-only').forEach(e => e.style.display = 'block');
+                }
+                
+                init();
+            } else {
+                alert('Invalid User ID or Password\n\nDefault Login:\nUser ID: admin\nPassword: dvs123');
+            }
+        } catch (error) {
+            console.error('Login error:', error);
+            alert('An error occurred during login. Please check the console for details.');
+        }
+    }
+
+    // Logout Function
+    function doLogout() {
+        if (confirm('Are you sure you want to logout?')) {
+            currentUser = null;
+            location.reload();
+        }
+    }
+
+    // Initialize Portal
+    function init() {
+        globalRefresh();
+        
+        // Set today's date
+        const today = new Date().toISOString().split('T')[0];
+        document.getElementById('nDate').value = today;
+        document.getElementById('pDate').value = today;
+        
+        // Show/hide system reset option based on privileges
+        const resetOption = document.querySelector('.reset-only');
+        if (resetOption) {
+            resetOption.style.display = hasAdminPrivileges() ? 'block' : 'none';
+        }
+    }
+
+    // Register Teacher
+    function regT() {
+        const name = document.getElementById('rtName').value.trim();
+        const role = document.getElementById('rtRole').value;
+        const id = document.getElementById('rtID').value.trim();
+        const pass = document.getElementById('rtPass').value.trim();
+        
+        if (!name || !role || !id || !pass) {
+            showAlert('Please fill all fields', 'error');
+            return;
+        }
+        
+        if (pass.length < 6) {
+            showAlert('Password must be at least 6 characters', 'error');
+            return;
+        }
+        
+        // Check if ID already exists
+        if (db.teachers.some(t => t.id === id) || db.admins.some(a => a.id === id)) {
+            showAlert('User ID already exists!', 'error');
+            return;
+        }
+        
+        db.teachers.push({
+            name: name,
+            role: role,
+            id: id,
+            pass: pass,
+            createdAt: new Date().toISOString()
+        });
+        
+        save();
+        showAlert('Teacher registered successfully!', 'success');
+        
+        // Reset form
+        document.getElementById('teacherForm').reset();
+        
+        setTimeout(() => showMenu(), 1500);
+    }
+
+    // Register Student
+    function regS() {
+        const name = document.getElementById('rsName').value.trim();
+        const cls = document.getElementById('rsCls').value;
+        const parent = document.getElementById('rsParent').value.trim();
+        const contact = document.getElementById('rsContact').value.trim();
+        
+        if (!name || !cls) {
+            showAlert('Please fill required fields', 'error');
+            return;
+        }
+        
+        db.students.push({
+            name: name,
+            cls: cls,
+            parent: parent,
+            contact: contact,
+            enrolledAt: new Date().toISOString()
+        });
+        
+        save();
+        showAlert('Student enrolled successfully!', 'success');
+        
+        // Reset form
+        document.getElementById('studentForm').reset();
+        
+        setTimeout(() => showMenu(), 1500);
+    }
+
+    // Change Password
+    function changePassword() {
+        const newPass = document.getElementById('newPassword').value.trim();
+        const confirmPass = document.getElementById('confirmPassword').value.trim();
+        
+        if (!newPass || !confirmPass) {
+            showAlert('Please fill in both password fields', 'error');
+            return;
+        }
+        
+        if (newPass.length < 6) {
+            showAlert('Password must be at least 6 characters', 'error');
+            return;
+        }
+        
+        if (newPass !== confirmPass) {
+            showAlert('Passwords do not match!', 'error');
+            return;
+        }
+        
+        // Find and update user password
+        let userUpdated = false;
+        
+        const adminIndex = db.admins.findIndex(u => u.id === currentUser.id);
+        if (adminIndex !== -1) {
+            db.admins[adminIndex].pass = newPass;
+            currentUser.pass = newPass;
+            userUpdated = true;
+        }
+        
+        const teacherIndex = db.teachers.findIndex(u => u.id === currentUser.id);
+        if (teacherIndex !== -1) {
+            db.teachers[teacherIndex].pass = newPass;
+            currentUser.pass = newPass;
+            userUpdated = true;
+        }
+        
+        if (userUpdated) {
+            save();
+            showAlert('Password updated successfully!', 'success');
+            
+            document.getElementById('securityForm').reset();
+            
+            setTimeout(() => {
+                alert('Password changed successfully! You will be logged out for security.');
+                doLogout();
+            }, 1500);
+        } else {
+            showAlert('Error: User not found in system', 'error');
+        }
+    }
+
+    // Full System Reset
+    function performSystemReset() {
+        if (!hasAdminPrivileges()) {
+            showAlert('Access Denied: Only Admin/Director can perform system reset', 'error');
+            return;
+        }
+        
+        if (!confirm('⚠️ WARNING: Delete ALL data?\n\nThis will permanently remove:\n• All teachers\n• All students\n• All BMC records\n\nThis action CANNOT be undone!')) {
+            return;
+        }
+        
+        if (!confirm('⚠️ FINAL WARNING!\n\nAre you absolutely sure you want to reset the entire system?\n\nClick OK to proceed with PERMANENT deletion.')) {
+            return;
+        }
+        
+        db.teachers = [];
+        db.students = [];
+        db.logs = [];
+        
+        save();
+        
+        alert('✓ System reset complete!\n\nThe portal will now reload with a fresh database.');
+        location.reload();
+    }
+
+    // Show Menu
+    function showMenu() {
+        document.getElementById('main-menu').style.display = 'grid';
+        document.querySelectorAll('.container').forEach(c => c.style.display = 'none');
+    }
+
+    // Show Panel
+    function showPanel(id) {
+        document.getElementById('main-menu').style.display = 'none';
+        document.querySelectorAll('.container').forEach(c => c.style.display = 'none');
+        document.getElementById(id).style.display = 'block';
+        
+        if (id === 'tab-ana') {
+            loadAnalytics();
+        } else if (id === 'tab-manage') {
+            loadManageStats();
+        } else if (id === 'tab-security') {
+            loadSecuritySettings();
+        } else if (id === 'tab-config') {
+            loadConfigPanel();
+        }
+    }
+
+    // Load Config Panel
+    function loadConfigPanel() {
+        if (!hasAdminPrivileges()) {
+            showAlert('Access Denied: Only Admin/Director can access system configuration', 'error');
+            showMenu();
+            return;
+        }
+        
+        loadClassList();
+        loadIssuesLibrary();
+        applyBranding();
+        updateFeatureToggles();
+    }
+
+    // Load Security Settings
+    function loadSecuritySettings() {
+        document.getElementById('securityUserName').textContent = currentUser.name;
+        document.getElementById('securityUserRole').textContent = currentUser.role || 'Teacher';
+        document.getElementById('securityUserID').textContent = currentUser.id;
+    }
+
+    // Load Analytics
+    function loadAnalytics() {
+        const students = db.students.map(s => `<option value="${s.name}">${s.name} (${s.cls})</option>`).join('');
+        document.getElementById('anaStd').innerHTML = '<option value="">-- Select Student --</option>' + students;
+        
+        const totalNeg = db.logs.filter(l => l.type === 'Negative').length;
+        const totalPos = db.logs.filter(l => l.type === 'Positive').length;
+        
+        document.getElementById('overallStats').innerHTML = `
+            <div class="stat-card" style="background: var(--neg);">
+                <h3>${totalNeg}</h3>
+                <p>Total Negative</p>
+            </div>
+            <div class="stat-card" style="background: var(--pos);">
+                <h3>${totalPos}</h3>
+                <p>Total Positive</p>
+            </div>
+            <div class="stat-card">
+                <h3>${totalNeg + totalPos}</h3>
+                <p>Total Records</p>
+            </div>
+        `;
+        
+        loadStats();
+    }
+
+    // Toggle Analytics View
+    function toggleAnalyticsView() {
+        const scope = document.getElementById('repScope').value;
+        document.getElementById('searchBox').style.display = scope === 'single' ? 'block' : 'none';
+        document.getElementById('classBox').style.display = scope === 'class' ? 'block' : 'none';
+        loadStats();
+    }
+
+    // Load Stats
+    function loadStats() {
+        const scope = document.getElementById('repScope').value;
+        let logs = [];
+        
+        if (scope === 'single') {
+            const student = document.getElementById('anaStd').value;
+            if (!student) return;
+            logs = db.logs.filter(l => l.student === student);
+        } else if (scope === 'class') {
+            const cls = document.getElementById('anaCls').value;
+            if (!cls) return;
+            logs = db.logs.filter(l => l.class === cls);
+        } else {
+            logs = db.logs;
+        }
+        
+        const negLogs = logs.filter(l => l.type === 'Negative');
+        const posLogs = logs.filter(l => l.type === 'Positive');
+        
+        document.getElementById('negLogs').innerHTML = negLogs.length ? 
+            negLogs.map(l => `
+                <div class="log-entry">
+                    <strong>${l.date}</strong><br>
+                    Student: ${l.student}<br>
+                    Issue: ${l.issue || 'N/A'}<br>
+                    Grade: ${l.grade}<br>
+                    Teacher: ${l.teacher}
+                </div>
+            `).join('') : '<p style="text-align:center; color:#999;">No records found</p>';
+        
+        document.getElementById('posLogs').innerHTML = posLogs.length ?
+            posLogs.map(l => `
+                <div class="log-entry">
+                    <strong>${l.date}</strong><br>
+                    Student: ${l.student}<br>
+                    Points: ${l.grade}/5<br>
+                    Details: ${l.appreciation}<br>
+                    Teacher: ${l.teacher}
+                </div>
+            `).join('') : '<p style="text-align:center; color:#999;">No records found</p>';
+        
+        document.getElementById('negTotal').textContent = negLogs.length;
+        document.getElementById('posTotal').textContent = posLogs.length;
+    }
+
+    // Load Manage Stats
+    function loadManageStats() {
+        document.getElementById('totalTeachers').textContent = db.teachers.length;
+        document.getElementById('totalStudents').textContent = db.students.length;
+        document.getElementById('totalRecords').textContent = db.logs.length;
+    }
+
+    // Show Manage Section
+    function showManageSection() {
+        const action = document.getElementById('manageAction').value;
+        const content = document.getElementById('manageContent');
+        
+        if (action === 'view-teachers') {
+            content.innerHTML = '<h4>All Teachers</h4>' +
+                (db.teachers.length ? 
+                    db.teachers.map(t => `<div class="log-entry">${t.name} - ${t.role} (ID: ${t.id})</div>`).join('') :
+                    '<p>No teachers registered</p>');
+        } else if (action === 'view-students') {
+            content.innerHTML = '<h4>All Students</h4>' +
+                (db.students.length ?
+                    db.students.map(s => `<div class="log-entry">${s.name} - ${s.cls}</div>`).join('') :
+                    '<p>No students enrolled</p>');
+        } else if (action === 'export-data') {
+            content.innerHTML = `
+                <button class="btn btn-main" onclick="exportAllData()">📥 Export Complete Database</button>
+            `;
+        } else if (action === 'system-reset') {
+            if (!hasAdminPrivileges()) {
+                content.innerHTML = '<div class="alert alert-error">Access Denied: Only Admin, Principal, or Director can perform system reset.</div>';
+                return;
+            }
+            
+            content.innerHTML = `
+                <div class="warning-box">
+                    <h4>⚠️ DANGER ZONE</h4>
+                    <p><strong>Full System Reset</strong></p>
+                    <p>This will permanently delete:</p>
+                    <ul style="text-align: left;">
+                        <li>All ${db.teachers.length} teachers</li>
+                        <li>All ${db.students.length} students</li>
+                        <li>All ${db.logs.length} BMC records</li>
+                    </ul>
+                    <p style="color: red;"><strong>This action CANNOT be undone!</strong></p>
+                </div>
+                <button class="btn btn-danger" onclick="performSystemReset()">🗑️ Reset Entire System</button>
+            `;
+        } else {
+            content.innerHTML = '';
+        }
+    }
+
+    // Export All Data
+    function exportAllData() {
+        const dataStr = JSON.stringify(db, null, 2);
+        const blob = new Blob([dataStr], {type: 'application/json'});
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `DVS_Backup_${new Date().toISOString().split('T')[0]}.json`;
+        a.click();
+        showAlert('Data exported successfully!', 'success');
+    }
+
+    // Download Report
+    function downloadReport() {
+        const format = document.getElementById('ext').value;
+        const scope = document.getElementById('repScope').value;
+        
+        let logs = [];
+        let reportTitle = `${db.config.branding.schoolName} - BMC Report`;
+        
+        if (scope === 'single') {
+            const student = document.getElementById('anaStd').value;
+            if (!student) {
+                showAlert('Please select a student first!', 'error');
+                return;
+            }
+            logs = db.logs.filter(l => l.student === student);
+            reportTitle = `BMC Report - ${student}`;
+        } else if (scope === 'class') {
+            const cls = document.getElementById('anaCls').value;
+            if (!cls) {
+                showAlert('Please select a class first!', 'error');
+                return;
+            }
+            logs = db.logs.filter(l => l.class === cls);
+            reportTitle = `BMC Report - ${cls}`;
+        } else {
+            logs = db.logs;
+        }
+        
+        if (logs.length === 0) {
+            showAlert('No records found to download!', 'error');
+            return;
+        }
+        
+        const headers = ['Date', 'Student', 'Class', 'Type', 'Grade', 'Details', 'Teacher'];
+        const rows = logs.map(log => [
+            log.date,
+            log.student,
+            log.class,
+            log.type,
+            log.grade,
+            log.type === 'Negative' ? (log.issue || 'N/A') : (log.appreciation || 'N/A'),
+            log.teacher
+        ]);
+        
+        let csvContent = headers.join(',') + '\n';
+        rows.forEach(row => {
+            csvContent += row.map(cell => `"${cell}"`).join(',') + '\n';
+        });
+        
+        const blob = new Blob([csvContent], { type: 'text/csv' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `${reportTitle}_${new Date().toISOString().split('T')[0]}.csv`;
+        a.click();
+        
+        showAlert(`${format.toUpperCase()} report downloaded successfully!`, 'success');
+    }
+
+    // Save to LocalStorage
+    function save() {
+        localStorage.setItem('DVS_V30_DB', JSON.stringify(db));
+    }
+
+    // Show Alert
+    function showAlert(message, type) {
+        const alertDiv = document.createElement('div');
+        alertDiv.className = `alert alert-${type}`;
+        alertDiv.textContent = message;
+        
+        const container = document.querySelector('.container[style*="display: block"]');
+        if (container) {
+            const panel = container.querySelector('.panel');
+            if (panel) {
+                panel.insertBefore(alertDiv, panel.firstChild);
+                setTimeout(() => alertDiv.remove(), 3000);
+            }
+        }
+    }
+
+    // Enter key login
+    document.addEventListener('DOMContentLoaded', function() {
+        const loginInputs = document.querySelectorAll('#login-section input');
+        loginInputs.forEach(input => {
+            input.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    doLogin();
+                }
+            });
+        });
+        
+        // Apply initial branding
+        if (db.config && db.config.branding) {
+            applyBranding();
+        }
+    });
+</script>
+
+</body>
+</html>
