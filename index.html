@@ -1012,9 +1012,9 @@
     console.log('🔥 Firebase initialized successfully!');
     
     // ========================================
-    // DATABASE STRUCTURE
+    // DATABASE STRUCTURE - DEFAULT VALUES
     // ========================================
-    let db = {
+    const defaultDB = {
         admins: [{id:"admin", pass:"dvs123", name:"Director", role:"Admin"}],
         teachers: [],
         students: [],
@@ -1067,11 +1067,12 @@
         }
     };
     
+    let db = JSON.parse(JSON.stringify(defaultDB)); // Deep copy
     let currentUser = null;
     let isDataLoaded = false;
 
     // ========================================
-    // 🔥 FIREBASE REAL-TIME SYNC FUNCTIONS
+    // 🔥 FIREBASE REAL-TIME SYNC FUNCTIONS - FIXED
     // ========================================
     
     function loadFromFirebase() {
@@ -1080,7 +1081,19 @@
             .then((snapshot) => {
                 const data = snapshot.val();
                 if (data) {
-                    db = data;
+                    // Safely merge loaded data with defaults
+                    db = {
+                        admins: Array.isArray(data.admins) ? data.admins : defaultDB.admins,
+                        teachers: Array.isArray(data.teachers) ? data.teachers : [],
+                        students: Array.isArray(data.students) ? data.students : [],
+                        logs: Array.isArray(data.logs) ? data.logs : [],
+                        config: {
+                            branding: data.config?.branding || defaultDB.config.branding,
+                            classes: Array.isArray(data.config?.classes) ? data.config.classes : defaultDB.config.classes,
+                            behaviorIssues: data.config?.behaviorIssues || defaultDB.config.behaviorIssues,
+                            features: data.config?.features || defaultDB.config.features
+                        }
+                    };
                     console.log('✅ Data loaded successfully:', {
                         teachers: db.teachers.length,
                         students: db.students.length,
@@ -1088,6 +1101,7 @@
                     });
                 } else {
                     console.log('📝 No existing data found, initializing defaults...');
+                    db = JSON.parse(JSON.stringify(defaultDB)); // Deep copy
                     saveToFirebase();
                 }
                 isDataLoaded = true;
@@ -1097,8 +1111,12 @@
             })
             .catch((error) => {
                 console.error('❌ Firebase load error:', error);
-                alert('🔴 Error connecting to Firebase:\n' + error.message);
+                alert('🔴 Error connecting to Firebase:\n' + error.message + '\n\nPlease check:\n1. Firebase configuration\n2. Database rules\n3. Internet connection');
+                // Use default structure even on error
+                db = JSON.parse(JSON.stringify(defaultDB));
+                isDataLoaded = true;
                 hideLoading();
+                showLoginSection();
             });
     }
     
@@ -1119,9 +1137,23 @@
             
             const data = snapshot.val();
             if (data && currentUser) {
-                const oldLogsCount = db.logs.length;
-                db = data;
-                const newLogsCount = db.logs.length;
+                const oldLogsCount = Array.isArray(db.logs) ? db.logs.length : 0;
+                
+                // Safely merge the data
+                db = {
+                    admins: Array.isArray(data.admins) ? data.admins : defaultDB.admins,
+                    teachers: Array.isArray(data.teachers) ? data.teachers : [],
+                    students: Array.isArray(data.students) ? data.students : [],
+                    logs: Array.isArray(data.logs) ? data.logs : [],
+                    config: {
+                        branding: data.config?.branding || defaultDB.config.branding,
+                        classes: Array.isArray(data.config?.classes) ? data.config.classes : defaultDB.config.classes,
+                        behaviorIssues: data.config?.behaviorIssues || defaultDB.config.behaviorIssues,
+                        features: data.config?.features || defaultDB.config.features
+                    }
+                };
+                
+                const newLogsCount = Array.isArray(db.logs) ? db.logs.length : 0;
                 
                 if (newLogsCount > oldLogsCount) {
                     console.log('🔄 New record detected! Auto-refreshing...');
